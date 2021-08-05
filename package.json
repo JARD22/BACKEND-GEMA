@@ -1,0 +1,33 @@
+{
+  "name": "backend_gema",
+  "version": "1.0.0",
+  "description": "Servicios de autenticación, seguridad, registro y matricula",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JARD22/backend-gema.git"
+  },
+  "keywords": [
+    "GESTOR",
+    "EDUCATIVO",
+    "MATRICULA",
+    "ADMINISTRACION"
+  ],
+  "author": "Jorge Aguilera",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JARD22/backend-gema/issues"
+  },
+  "homepage": "https://github.com/JARD22/backend-gema#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.12.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.1"
+  }
+}
