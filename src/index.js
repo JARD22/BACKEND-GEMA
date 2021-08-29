@@ -4,10 +4,6 @@
 
 Porgramador: Jorge Aguilera
 Correo: jorge.aguilera.duron@gmail.com
-
-
-
-
 */
 
 
@@ -18,13 +14,16 @@ const cors= require('cors');
 
 
 app.use(cors());
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }));
+
 
 app.use('/api/login', require('./routes/login'));
-app.use('/api/usuarios', require('./routes/usuarios'));
+// app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/personas', require('./routes/personas'));
-// app.use('/api/expedientes', require('./routes/personas'));
-// app.use('/api/reportes', require('./routes/personas'));
-// app.use('/api/sidebar', require('./routes/personas'));
+// // app.use('/api/expedientes', require('./routes/personas'));
+// // app.use('/api/reportes', require('./routes/personas'));
+// // app.use('/api/sidebar', require('./routes/personas'));
 
 
 
