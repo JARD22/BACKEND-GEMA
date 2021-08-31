@@ -4,8 +4,7 @@ const {response}= require('express');
 
 const validarToken = (req,res=response,next)=>{
 
-    const token = req.headers('x-token')
-
+    const token = req.header('x-token')
 
     if (!token) {
         return  res.status(401).json({
@@ -18,7 +17,7 @@ const validarToken = (req,res=response,next)=>{
             const {correo} = jwt.verify(token,process.env.SEED)
 
             req.correo = correo;
-
+            next()
         } catch (error) {
             return res.status(401).json({
                 ok:false,
@@ -27,3 +26,5 @@ const validarToken = (req,res=response,next)=>{
         }
     }
 }
+
+module.exports = validarToken;

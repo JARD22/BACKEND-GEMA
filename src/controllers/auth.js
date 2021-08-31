@@ -23,7 +23,6 @@ const login = async(req,res=response)=>{
     
 
     try {
-        
         const usuarioDB= await pool.query('SELECT * FROM FN_LOGIN($1)',[usuario]);
 
         if (usuarioDB.rowCount === 0) {
@@ -41,8 +40,6 @@ const login = async(req,res=response)=>{
                 intentos:usuarioDB.rows[0].out_intentos
 
     }
-
-
     const contrasenaValida = bcrypt.compareSync(contrasena,usuarioDB.rows[0].out_contrasena)
 
     if (userObj.correo && contrasenaValida) {
@@ -55,13 +52,14 @@ const login = async(req,res=response)=>{
             token
         })
     } else {
-        
+        return res.status(403).json({
+            ok: false,
+            msg: 'Correo o contraseña no válido'
+        });
     }
 
     }catch(error) {
-        console.log(error)
         return res.status(500).json({
-
             ok:false,
             msg:'Error al iniciar sesión'
         });
