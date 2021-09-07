@@ -24,7 +24,7 @@ const tipoPersona = async(req,res=response)=>{
         let tipo_personas
 
     try {
-        
+          
         query = await pool.query('SELECT * FROM FN_LISTA_TIPO_PERSONA()')
         tipo_personas= query.rows
 
@@ -35,10 +35,10 @@ const tipoPersona = async(req,res=response)=>{
 
 
     } catch (error) {
-        
+        console.log(error)
         return res.status(500).json({
             ok:false,
-            error
+            msg:error
         });
     }
 }
@@ -46,6 +46,7 @@ const tipoPersona = async(req,res=response)=>{
 
 const getPersonas= async(req,res=response)=>{
 
+    
     let offset= req.params.offset
     let personas;
     let query;
@@ -75,12 +76,13 @@ const registroPersonaUsuario = async(req,res=response)=>{
 
     let{
         cod_tipo_persona,dni,primer_nombre,primer_apellido,nacionalidad,segundo_nombre,segundo_apellido,
-        sexo,fecha_nacimiento,correo,direccion,telefonos
+        sexo,fecha_nacimiento,correo,direccion,telefonosUsuario
         }=req.body
 
     try {
-                   
-   
+        
+         let telefonos = JSON.stringify(telefonosUsuario)
+               
                 await pool.query('CALL SP_PERSONA_USUARIO($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)',[
                     cod_tipo_persona,dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,req.correo,
                     correo,direccion,telefonos,v4(),segundo_nombre,segundo_apellido
@@ -93,7 +95,7 @@ const registroPersonaUsuario = async(req,res=response)=>{
             
         });
     } catch (error) {
-        
+        console.log(error)
         return res.status(500).json({
             ok:false,
             msg:error.hint
@@ -131,11 +133,32 @@ const registroPersonaFamiliar = async(req,res=response)=>{
 
     let{
         cod_tipo_persona,dni,primer_nombre,primer_apellido,nacionalidad,segundo_nombre,segundo_apellido,
-        sexo,fecha_nacimiento,direccion,telefonos,crear_grupo,grupo,lugar_trabajo,
+        sexo,fecha_nacimiento,direccion,telefonosFamiliar,crear_grupo,grupo,lugar_trabajo,
         ocupacion,encargado,escolaridad}=req.body
 
+        if(encargado===""){
+            encargado=false
+        }
+
+        if(crear_grupo===""){
+            crear_grupo=false
+        }
+
+        for (let i = 0; i < telefonosFamiliar.length; i++) {
+            if (telefonosFamiliar[i].whatsapp=="") {
+                telefonosFamiliar[i].whatsapp=false
+            }
+            if (telefonosFamiliar[i].emergencia=="") {
+                telefonosFamiliar[i].emergencia=false
+            }
+            
+        }
+
     try {
-  
+//   console.log(cod_tipo_persona,dni,primer_nombre,primer_apellido,nacionalidad,segundo_nombre,segundo_apellido,
+//     sexo,fecha_nacimiento,direccion,JSON.stringify(telefonosFamiliar),crear_grupo,grupo,lugar_trabajo,
+//     ocupacion,encargado,escolaridad)
+let telefonos=JSON.stringify(telefonosFamiliar)
                 
     await pool.query('CALL SP_PERSONA_FAMILIAR($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)',[
                     cod_tipo_persona,dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,req.correo,direccion,
@@ -147,7 +170,7 @@ const registroPersonaFamiliar = async(req,res=response)=>{
             msg:'Persona registrada'
         });
     } catch (error) {
-
+        console.log(error)
         return res.status(500).json({
             ok:false,
             msg:error.hint

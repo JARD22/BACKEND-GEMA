@@ -23,13 +23,16 @@ const {Router}= require('express');
 const router = Router();
 const validarToken = require('../helpers/validar-jwt');
 
-const {getPersonas,tipoPersona, registroPersonaUsuario, registroPersonaAlumno, registroPersonaFamiliar}= require('../controllers/personas');
-const { check } = require('express-validator');
-const validarCampos = require('../middlewares/validar-campos')
+const {getPersonas,tipoPersona, registroPersonaUsuario, registroPersonaAlumno, 
+       registroPersonaFamiliar}= require('../controllers/personas');
 
-router.get('/:offset',validarToken,getPersonas);
+const { check } = require('express-validator');
+
+const validarCampos = require('../middlewares/validar-campos');
 
 router.get('/tipo-persona',validarToken,tipoPersona);
+router.get('/:offset',validarToken,getPersonas);
+
 
 router.post('/usuario',[
     check('cod_tipo_persona','cod_tipo_persona es obligatorio').not().isEmpty(),
@@ -41,7 +44,7 @@ router.post('/usuario',[
     check('fecha_nacimiento','fecha_nacimiento es obligatorio').not().isEmpty(),
     check('correo','correo es obligatorio').not().isEmpty(),
     check('direccion','direccion es obligatorio').not().isEmpty(),
-    check('telefonos','telefonos es obligatorio').not().isEmpty(),
+    check('telefonosUsuario','telefonos es obligatorio').not().isEmpty(),
     validarCampos,
     validarToken
 ],registroPersonaUsuario);
@@ -71,10 +74,9 @@ router.post('/familiar',[
     check('sexo','sexo es obligatorio').not().isEmpty(),
     check('fecha_nacimiento','fecha_nacimiento es obligatorio').not().isEmpty(),
     check('direccion','direccion es obligatorio').not().isEmpty(),
-    check('telefonos','telefonos es obligatorio').not().isEmpty(),
+    check('telefonosFamiliar','telefonos es obligatorio').not().isEmpty(),
     check('lugar_trabajo','lugar_trabajo es obligatorio').not().isEmpty(),
     check('ocupacion','ocupacion es obligatorio').not().isEmpty(),
-    check('encargado','encargado es obligatorio').not().isEmpty(),
     check('escolaridad','escolaridad es obligatorio').not().isEmpty(),
     validarCampos,
     validarToken

@@ -15,7 +15,7 @@ const response = require('express');
 const pool = require('../postgresql/postgresql');
 const bcrypt = require('bcryptjs');
 const generarJWT = require('../helpers/jwt');
-
+const jwt = require('jsonwebtoken')
 
 const login = async(req,res=response)=>{
 
@@ -66,5 +66,37 @@ const login = async(req,res=response)=>{
     }
     }
 
+const renovar= async(req,res=response)=>{
+    
+ let correo = req.correo
 
-module.exports=login;
+ try {
+    const usuarioDB= await pool.query('SELECT * FROM FN_LOGIN($1)',[correo]);
+
+   let userObj ={
+            id:usuarioDB.rows[0].out_id,
+            correo: usuarioDB.rows[0].out_usuario,
+            nombre: usuarioDB.rows[0].out_nombre,
+            rol: usuarioDB.rows[0].out_rol,
+            intentos:usuarioDB.rows[0].out_intentos
+
+}
+
+    const token = await generarJWT(userObj.correo);
+    
+    return res.status(200).json({
+        ok:true,
+        userObj,
+        token
+    })
+
+
+}catch(error) {
+    return res.status(500).json({
+        ok:false,
+        msg:'Error al renovar el token'
+    });
+}
+}
+
+module.exports={login,renovar};

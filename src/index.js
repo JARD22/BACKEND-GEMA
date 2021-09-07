@@ -18,6 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }));
 
 
+
+
 app.use('/api/login', require('./routes/login'));
 // app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/personas', require('./routes/personas'));
