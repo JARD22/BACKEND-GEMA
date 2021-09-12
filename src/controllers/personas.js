@@ -178,11 +178,37 @@ let telefonos=JSON.stringify(telefonosFamiliar)
     }
 }
 
+const personaPorID = async(req,res=response)=>{
+
+    let uid = req.params.uid
+    let query;
+    let persona;
+
+    try {
+
+    query = await pool.query('SELECT * FROM FN_PERSONA_UID($1)',[uid]);
+    persona =query.rows
+
+    return res.status(200).json({
+        ok:true,
+        persona
+        
+    })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:'No se han recuperado los datos'
+        })    
+    }
+}
+
 
 module.exports= {
     getPersonas,
     tipoPersona,
     registroPersonaUsuario,
     registroPersonaAlumno,
-    registroPersonaFamiliar
+    registroPersonaFamiliar,
+    personaPorID
 }

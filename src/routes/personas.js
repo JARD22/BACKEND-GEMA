@@ -24,7 +24,8 @@ const router = Router();
 const validarToken = require('../helpers/validar-jwt');
 
 const {getPersonas,tipoPersona, registroPersonaUsuario, registroPersonaAlumno, 
-       registroPersonaFamiliar}= require('../controllers/personas');
+       registroPersonaFamiliar,
+       personaPorID}= require('../controllers/personas');
 
 const { check } = require('express-validator');
 
@@ -82,6 +83,7 @@ router.post('/familiar',[
     validarToken
 ],registroPersonaFamiliar);
 
+router.get('/persona-id/:uid',validarToken,personaPorID);
 
 
 module.exports= router;
