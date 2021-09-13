@@ -25,7 +25,8 @@ const validarToken = require('../helpers/validar-jwt');
 
 const {getPersonas,tipoPersona, registroPersonaUsuario, registroPersonaAlumno, 
        registroPersonaFamiliar,
-       personaPorID}= require('../controllers/personas');
+       personaPorID,
+       actualizarFamiliar}= require('../controllers/personas');
 
 const { check } = require('express-validator');
 
@@ -85,5 +86,23 @@ router.post('/familiar',[
 
 router.get('/persona-id/:uid',validarToken,personaPorID);
 
+
+router.patch('/actualizar-familiar',[
+    check('dni','dni es obligatorio').not().isEmpty(),
+    check('primer_nombre','primer_nombre es obligatorio').not().isEmpty(),
+    check('primer_apellido','primer_apellido es obligatorio').not().isEmpty(),
+    check('nacionalidad','nacionalidad es obligatorio').not().isEmpty(),
+    check('sexo','sexo es obligatorio').not().isEmpty(),
+    check('fecha_nacimiento','fecha_nacimiento es obligatorio').not().isEmpty(),
+    check('direccion','direccion es obligatorio').not().isEmpty(),
+    check('telefonosFamiliar','telefonosFamiliar es obligatorio').not().isEmpty(),
+    check('lugar_trabajo','lugar_trabajo es obligatorio').not().isEmpty(),
+    check('ocupacion','ocupacion es obligatorio').not().isEmpty(),
+    check('encargado','encargado es obligatorio').not().isEmpty(),
+    check('escolaridad','escolaridad es obligatorio').not().isEmpty(),
+    check('uid','uid es obligatorio').not().isEmpty(),
+    validarCampos,
+    validarToken
+],actualizarFamiliar)
 
 module.exports= router;

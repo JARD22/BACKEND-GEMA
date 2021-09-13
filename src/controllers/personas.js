@@ -203,6 +203,36 @@ const personaPorID = async(req,res=response)=>{
     }
 }
 
+const actualizarFamiliar = async (req,res=response)=>{
+
+let correo = req.correo;   
+let {dni,primer_nombre,primer_apellido,nacionalidad,segundo_nombre,segundo_apellido,
+    sexo,fecha_nacimiento,direccion,telefonosFamiliar,lugar_trabajo,ocupacion,encargado,
+    escolaridad,uid}= req.body;
+
+    try {
+   
+        let telefonos = JSON.stringify(telefonosFamiliar)
+
+        // console.log(dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,correo,direccion,telefonos,
+        //     lugar_trabajo,ocupacion,encargado,escolaridad,uid,segundo_nombre,segundo_apellido)
+await pool.query('CALL SP_ACTUALIZAR_FAMILIAR($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16 )',[
+    dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,correo,direccion,telefonos,
+    lugar_trabajo,ocupacion,encargado,escolaridad,uid,segundo_nombre,segundo_apellido])
+
+        return res.status(200).json({
+            ok:true,
+            msg:'Datos actualizados'
+        });
+    } catch (error) {
+        
+        return res.status(500).json({
+            ok:false,
+            msg:error.hint
+        })
+    }
+}
+
 
 module.exports= {
     getPersonas,
@@ -210,5 +240,6 @@ module.exports= {
     registroPersonaUsuario,
     registroPersonaAlumno,
     registroPersonaFamiliar,
-    personaPorID
+    personaPorID,
+    actualizarFamiliar
 }
