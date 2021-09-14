@@ -233,6 +233,47 @@ await pool.query('CALL SP_ACTUALIZAR_FAMILIAR($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11
     }
 }
 
+const eliminarTelefono = async(req,res=response)=>{
+
+    let id= req.params.id;
+
+    try {
+        
+        await pool.query('CALL SP_ELIMINAR_TELEFONO($1)',[id]);
+
+        return res.status(200).json({
+            ok:true,
+            msg:'Teléfono eliminado'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:error.code
+        })
+    }
+}
+
+const busquedaPorTermnino=async(req,res=response)=>{
+    
+    let termino = req.params.termino;
+    let query;
+    try {
+    query=await pool.query(`SELECT * FROM FN_BUCAR_PERSONA('%${termino}%')`)
+
+        return res.status(200).json({
+            ok:true,
+            persona:query.rows
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            ok:false
+        })
+    }
+}
+
 
 module.exports= {
     getPersonas,
@@ -241,5 +282,7 @@ module.exports= {
     registroPersonaAlumno,
     registroPersonaFamiliar,
     personaPorID,
-    actualizarFamiliar
+    actualizarFamiliar,
+    eliminarTelefono,
+    busquedaPorTermnino
 }

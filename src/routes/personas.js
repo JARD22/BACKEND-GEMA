@@ -26,7 +26,9 @@ const validarToken = require('../helpers/validar-jwt');
 const {getPersonas,tipoPersona, registroPersonaUsuario, registroPersonaAlumno, 
        registroPersonaFamiliar,
        personaPorID,
-       actualizarFamiliar}= require('../controllers/personas');
+       actualizarFamiliar,
+       eliminarTelefono,
+       busquedaPorTermnino}= require('../controllers/personas');
 
 const { check } = require('express-validator');
 
@@ -34,7 +36,7 @@ const validarCampos = require('../middlewares/validar-campos');
 
 router.get('/tipo-persona',validarToken,tipoPersona);
 router.get('/:offset',validarToken,getPersonas);
-
+router.get('/busqueda/:termino',busquedaPorTermnino);
 
 router.post('/usuario',[
     check('cod_tipo_persona','cod_tipo_persona es obligatorio').not().isEmpty(),
@@ -103,6 +105,10 @@ router.patch('/actualizar-familiar',[
     check('uid','uid es obligatorio').not().isEmpty(),
     validarCampos,
     validarToken
-],actualizarFamiliar)
+],actualizarFamiliar);
+
+router.delete('/eliminar-telefono/:id',validarToken,eliminarTelefono)
+
+
 
 module.exports= router;
