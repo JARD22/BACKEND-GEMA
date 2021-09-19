@@ -233,6 +233,32 @@ await pool.query('CALL SP_ACTUALIZAR_FAMILIAR($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11
     }
 }
 
+
+const actualizarAlumno =async(req,res=response)=>{
+    
+    let {uid,cod_tipo_persona,dni,fecha_nacimiento,primer_nombre,primer_apellido,segundo_nombre,segundo_apellido,
+        nacionalidad,direccion,enfermedad,vive_con,sexo,estado, motivo_retiro}= req.body;
+
+    try {
+        
+
+await pool.query('CALL SP_ACTUALIZAR_ALUMNO($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)',
+[dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,enfermedad,vive_con,direccion,uid,estado,
+motivo_retiro,segundo_nombre,segundo_apellido])
+
+            return res.status(201).json({
+                ok:true,
+                msg:'Alumno actualizado'
+            });
+    } catch (error) {
+        
+        return res.status(500).json({
+            ok:false,
+            msg:error.hint
+        })
+    }
+}
+
 const eliminarTelefono = async(req,res=response)=>{
 
     let id= req.params.id;
@@ -274,6 +300,28 @@ const busquedaPorTermnino=async(req,res=response)=>{
     }
 }
 
+const alumnoPorID= async(req,res=response)=>{
+
+    let uid = req.params.uid;
+    
+    let query;
+
+    try {
+        
+        query = await pool.query('SELECT * FROM FN_ALUMNO_UID($1)',[uid]);
+
+        return res.status(200).json({
+            ok:true,
+            alumno:query.rows
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:true,
+            msg:`Error al cargar los datos, Error ${error.code}`
+        })
+    }
+}
 
 module.exports= {
     getPersonas,
@@ -282,7 +330,9 @@ module.exports= {
     registroPersonaAlumno,
     registroPersonaFamiliar,
     personaPorID,
+    alumnoPorID,
     actualizarFamiliar,
+    actualizarAlumno,
     eliminarTelefono,
     busquedaPorTermnino
 }

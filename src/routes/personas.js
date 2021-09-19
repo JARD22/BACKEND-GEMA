@@ -25,8 +25,8 @@ const validarToken = require('../helpers/validar-jwt');
 
 const {getPersonas,tipoPersona, registroPersonaUsuario, registroPersonaAlumno, 
        registroPersonaFamiliar,
-       personaPorID,
-       actualizarFamiliar,
+       personaPorID,alumnoPorID,
+       actualizarFamiliar,actualizarAlumno,
        eliminarTelefono,
        busquedaPorTermnino}= require('../controllers/personas');
 
@@ -88,6 +88,7 @@ router.post('/familiar',[
 
 router.get('/persona-id/:uid',validarToken,personaPorID);
 
+router.get('/alumno-id/:uid',validarToken,alumnoPorID)
 
 router.patch('/actualizar-familiar',[
     check('dni','dni es obligatorio').not().isEmpty(),
@@ -106,6 +107,23 @@ router.patch('/actualizar-familiar',[
     validarCampos,
     validarToken
 ],actualizarFamiliar);
+
+router.patch('/actualizar-alumno',[
+check('uid','uid es obligatorio').not().isEmpty(),
+check('cod_tipo_persona','cod_tipo_persona es obligatorio').not().isEmpty(),
+check('dni','dni es obligatorio').not().isEmpty(),
+check('fecha_nacimiento','fecha_nacimiento es obligatorio').not().isEmpty(),
+check('primer_nombre','primer_nombre es obligatorio').not().isEmpty(),
+check('primer_apellido','primer_apellido es obligatorio').not().isEmpty(),
+check('nacionalidad','nacionalidad es obligatorio').not().isEmpty(),
+check('direccion','direccion es obligatorio').not().isEmpty(),
+check('enfermedad','enfermedad es obligatorio').not().isEmpty(),
+check('vive_con','vive_con es obligatorio').not().isEmpty(),
+check('sexo','sexo es obligatorio').not().isEmpty(),
+check('estado','estado es obligatorio').not().isEmpty(),
+
+validarCampos,
+validarToken],actualizarAlumno)
 
 router.delete('/eliminar-telefono/:id',validarToken,eliminarTelefono)
 
