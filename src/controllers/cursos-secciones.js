@@ -102,9 +102,78 @@ const buscarCurso = async(req,res=response)=>{
 }
 
 
+const nuevaSeccion = async(req,res=response)=>{
+
+let {cod_curso,nombre,cupos,estado,anio}= req.body;
+let usr_registro= req.correo;
+
+try {
+        
+    await pool.query('CALL SP_NUEVA_SECCION($1,$2,$3,$4,$5,$6)',[cod_curso,nombre,cupos,anio,estado,usr_registro])
+
+        return res.status(201).json({
+            ok:true,
+            msg:'Seccion creada'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:`error: ${error.code}`
+        })
+    }
+}
+
+const actualizarSeccion = async(req,res= response)=>{
+    
+    let {cod_seccion,nombre,cupos,estado,anio}= req.body;
+
+    try {
+        
+        await pool.query('CALL SP_ACTUALIZAR_SECCION($1,$2,$3,$4,$5)',[cod_seccion,nombre,cupos,estado,anio])
+
+        return res.status(201).json({
+            ok:true,
+            msg:'Sección actualizada'
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            ok:false,
+            msg:'Error al actualizar el registro'
+        })
+    }
+}
+
+
+const listaSecciones = async(req,res=response)=>{
+
+    let query;
+    let {curso,anio}=req.params
+
+    try {
+       
+        query= await pool.query('SELECT * FROM FN_LISTA_SECCIONES($1,$2)',[curso,anio])
+
+        return res.status(200).json({
+            ok:true,
+            secciones:query.rows
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:'Erros al cargar la lista de secciones'
+        })
+    }
+}
+
 module.exports={
     nuevoCurso,
     listaCursos,
     actualizarCurso,
-    buscarCurso    
+    buscarCurso,
+    nuevaSeccion,
+    actualizarSeccion,
+    listaSecciones    
 }
