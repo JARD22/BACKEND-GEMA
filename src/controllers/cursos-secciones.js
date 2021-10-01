@@ -109,7 +109,7 @@ let usr_registro= req.correo;
 
 try {
         
-    await pool.query('CALL SP_NUEVA_SECCION($1,$2,$3,$4,$5,$6)',[cod_curso,nombre,cupos,anio,estado,usr_registro])
+    await pool.query('CALL SP_NUEVA_SECCION($1,$2,$3,$4,$5,$6)',[cod_curso,nombre,anio,cupos,estado,usr_registro])
 
         return res.status(201).json({
             ok:true,
@@ -168,12 +168,34 @@ const listaSecciones = async(req,res=response)=>{
     }
 }
 
+const unirSecciones = async(req,res=response)=>{
+    
+    // (IN_NOMBRE VARCHAR,IN_SECCION1 INT,IN_SECCION2 INT,IN_ANIO VARCHAR,IN_USR_REGISTRO VARCHAR)
+    let{nombre,anio,seccion1,seccion2}=req.body;
+
+    let usr_registro = req.correo;
+    try {
+        
+        await pool.query('CALL SP_UNIR_SECCIONES($1,$2,$3,$4,$5)',[nombre,seccion1,seccion2,anio,usr_registro])
+
+        return res.status(201).json({
+            ok:true,
+            msg:'Secciones actualizadas'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:error.hint
+        })
+    }
+}
 module.exports={
-    nuevoCurso,
-    listaCursos,
     actualizarCurso,
-    buscarCurso,
-    nuevaSeccion,
     actualizarSeccion,
-    listaSecciones    
+    buscarCurso,
+    nuevoCurso,
+    nuevaSeccion,
+    listaCursos,
+    listaSecciones,
+    unirSecciones    
 }

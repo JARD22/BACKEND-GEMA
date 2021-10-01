@@ -27,7 +27,8 @@ const{ nuevoCurso,
     buscarCurso, 
     listaSecciones,
     nuevaSeccion,
-    actualizarSeccion}= require('../controllers/cursos-secciones');
+    actualizarSeccion,
+    unirSecciones}= require('../controllers/cursos-secciones');
 const { check } = require('express-validator');
 
 
@@ -73,6 +74,15 @@ router.patch('/actualizar-seccion',[
     check('anio','anio es requerido').not().isEmpty(),
     check('estado','estado es requerido').not().isEmpty(),
 validarCampos,validarToken],actualizarSeccion);
+
+router.post('/unir-secciones',[
+    check('nombre','nombre es requerido').not().isEmpty(),
+    check('anio','anio es requerido').not().isEmpty(),
+    check('seccion1','seccion1 es requerido').not().isEmpty(),
+    check('seccion2','seccion2 es requerido').not().isEmpty(),
+    validarCampos,
+    validarToken
+],unirSecciones)
 
 module.exports= router;
 
