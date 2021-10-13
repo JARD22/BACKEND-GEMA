@@ -189,6 +189,7 @@ const unirSecciones = async(req,res=response)=>{
         })
     }
 }
+
 module.exports={
     actualizarCurso,
     actualizarSeccion,

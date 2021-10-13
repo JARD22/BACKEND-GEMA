@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.use('/api/login', require('./routes/login'));
-// app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/colegios', require('./routes/colegios'));
 app.use('/api/personas', require('./routes/personas'));
 app.use('/api/cursos', require('./routes/cursos-secciones'));
 // // app.use('/api/expedientes', require('./routes/personas'));
