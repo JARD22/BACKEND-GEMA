@@ -68,10 +68,37 @@ const actualizarColegio=async(req,res=response)=>{
             msg:error.code
         })
     }
+
+
+
+}
+
+const buscarColegio = async(req,res= response)=>{
+
+    let termino = req.params.termino;
+    let query;
+
+    try {
+        
+       query= await pool.query(`SELECT * FROM FN_BUSCAR_COLEGIO('%${termino}%')`);
+
+        return res.status(200).json({
+            ok:true,
+            colegios: query.rows
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:error.code
+        });
+    }
 }
 
 module.exports={
     listaColegios,
     nuevoColegio,
-    actualizarColegio
+    actualizarColegio,
+    buscarColegio
 }

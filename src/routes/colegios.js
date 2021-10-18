@@ -11,7 +11,7 @@ const router = Router();
 const validarToken = require('../helpers/validar-jwt');
 const validarCampos = require('../middlewares/validar-campos');
 const { check } = require('express-validator');
-const { listaColegios, nuevoColegio, actualizarColegio } = require('../controllers/colegios');
+const { listaColegios, nuevoColegio, actualizarColegio,buscarColegio } = require('../controllers/colegios');
 
 
 
@@ -29,7 +29,12 @@ check('estado','estado es requerido').not().isEmpty(),
 check('cod_colegio','estado es requerido').not().isEmpty(),
 validarCampos,
 validarToken
-],actualizarColegio)
+],actualizarColegio);
+
+router.get('/busqueda/:termino',buscarColegio)
+
+
+
 
 
 
