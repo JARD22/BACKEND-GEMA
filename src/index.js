@@ -24,7 +24,7 @@ app.use('/api/login', require('./routes/login'));
 app.use('/api/colegios', require('./routes/colegios'));
 app.use('/api/personas', require('./routes/personas'));
 app.use('/api/cursos', require('./routes/cursos-secciones'));
-// // app.use('/api/expedientes', require('./routes/personas'));
+app.use('/api/matricula', require('./routes/matricula'));
 // // app.use('/api/reportes', require('./routes/personas'));
 // // app.use('/api/sidebar', require('./routes/personas'));
 
