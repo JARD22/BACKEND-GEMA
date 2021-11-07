@@ -15,7 +15,8 @@ const response = require('express');
 const pool = require('../postgresql/postgresql');
 const bcrypt = require('bcryptjs');
 const generarJWT = require('../helpers/jwt');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const passProvisional = require('../helpers/correoPassProvisional');
 
 const login = async(req,res=response)=>{
 
@@ -99,4 +100,37 @@ const renovar= async(req,res=response)=>{
 }
 }
 
-module.exports={login,renovar};
+const envPassProvisional=async(req,res=response)=>{
+   
+   let correo = req.params.correo
+   
+    try {
+        let provisional = await contrasenaProvisional(8) 
+        passProvisional(provisional,correo);
+
+        return res.status(200).json({
+            ok:true,
+            msg:'Revisa tu bandeja de entrada'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:'No se pudo enviar el correo al destinatario'
+        })
+    }
+
+}
+
+const contrasenaProvisional = async(longitud)=>{
+    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*';
+    let charactersLength = characters.length;
+    let result = ''
+    for ( var i = 0; i < longitud; i++ ) {
+      result +=  characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
+
+module.exports={login,renovar,envPassProvisional};
