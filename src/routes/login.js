@@ -7,6 +7,5 @@ router.post('/',login)
 
 router.get('/renovar',validarToken,renovar)
 
-router.post('/contrasena-provisional/:correo',envPassProvisional)
 
 module.exports=router;

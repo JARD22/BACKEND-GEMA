@@ -26,6 +26,7 @@ const login = async(req,res=response)=>{
     try {
         const usuarioDB= await pool.query('SELECT * FROM FN_LOGIN($1)',[usuario]);
 
+        
         if (usuarioDB.rowCount === 0) {
             return res.status(403).json({
                 ok: false,
@@ -41,6 +42,8 @@ const login = async(req,res=response)=>{
                 intentos:usuarioDB.rows[0].out_intentos
 
     }
+
+    
     const contrasenaValida = bcrypt.compareSync(contrasena,usuarioDB.rows[0].out_contrasena)
 
     if (userObj.correo && contrasenaValida) {
@@ -100,37 +103,6 @@ const renovar= async(req,res=response)=>{
 }
 }
 
-const envPassProvisional=async(req,res=response)=>{
-   
-   let correo = req.params.correo
-   
-    try {
-        let provisional = await contrasenaProvisional(8) 
-        passProvisional(provisional,correo);
 
-        return res.status(200).json({
-            ok:true,
-            msg:'Revisa tu bandeja de entrada'
-        });
 
-    } catch (error) {
-        return res.status(500).json({
-            ok:false,
-            msg:'No se pudo enviar el correo al destinatario'
-        })
-    }
-
-}
-
-const contrasenaProvisional = async(longitud)=>{
-    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*';
-    let charactersLength = characters.length;
-    let result = ''
-    for ( var i = 0; i < longitud; i++ ) {
-      result +=  characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-
-    return result;
-}
-
-module.exports={login,renovar,envPassProvisional};
+module.exports={login,renovar};

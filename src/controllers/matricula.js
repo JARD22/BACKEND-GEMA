@@ -150,10 +150,32 @@ const nuevaMatricula= async(req,res=response)=>{
     }
 }
 
+
+const metricasMatricula = async(req,res=response)=>{
+    
+    let anio = req.params.anio
+    let query;
+    try {
+        
+        query = await pool.query('SELECT * FROM FN_METRICAS_MATRICULA($1)',[anio]);
+
+        return res.status(200).json({
+            ok:true,
+            metricas:query.rows
+        })
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:'No se han podido cargar los datos'
+        })
+    }
+}
+
 module.exports={
     tiposMatricula,
     cursos,
     datosAlumno,
     datosParentesco,
-    nuevaMatricula
+    nuevaMatricula,
+    metricasMatricula
 }
