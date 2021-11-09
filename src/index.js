@@ -27,6 +27,7 @@ app.use('/api/cursos', require('./routes/cursos-secciones'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/reportes', require('./routes/personas'));
 app.use('/api/matricula', require('./routes/matricula'));
+app.use('/api/reportes', require('./routes/reportes'));
 
 
 

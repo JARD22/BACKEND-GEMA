@@ -9,7 +9,7 @@ Correo: jorge.aguilera.duron@gmail.com
 
 
 const {response, json}=require('express');
-const { query } = require('express-validator');
+
 const pool = require('../postgresql/postgresql');
 
 
