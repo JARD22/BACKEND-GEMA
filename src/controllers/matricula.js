@@ -154,19 +154,89 @@ const nuevaMatricula= async(req,res=response)=>{
 const metricasMatricula = async(req,res=response)=>{
     
     let anio = req.params.anio
-    let query;
+    let cod_tipo = req.params.cod_tipo
+    let offset = req.params.offset
+    let query1;
+    let query2;
+
+   
     try {
         
-        query = await pool.query('SELECT * FROM FN_METRICAS_MATRICULA($1)',[anio]);
+        query1 = await pool.query('SELECT * FROM FN_METRICAS_MATRICULA($1)',[anio]);
+        query2 = await pool.query('SELECT * FROM FN_LISTA_DOC_PENDIENTE($1,$2,$3)',[anio,cod_tipo,offset]);
+
+
+
+        if (query1.rowCount==0) {
+            return res.status(400).json({
+                ok:false,
+                msg:`No hay metricas para el anio ${anio}`
+            });
+        }
 
         return res.status(200).json({
             ok:true,
-            metricas:query.rows
+            metricas:query1.rows,
+            data:query2.rows
+            
         })
     } catch (error) {
         return res.status(500).json({
             ok:false,
             msg:'No se han podido cargar los datos'
+        })
+    }
+}
+
+const actualizarDoc = async(req,res=response)=>{
+
+
+    let {cod_matricula,doc_pendiente, desc_doc}= req.body;
+
+    try {
+        
+
+        await pool.query('CALL SP_ACTUALIZAR_DOC($1,$2,$3)',[doc_pendiente,cod_matricula,desc_doc]);
+
+        return res.status(200).json({
+            ok:true,
+            msg:'Datos actualizados'
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:'No se pudo actualizar la documentación'
+        })
+    }
+}
+
+const docDni= async(req,res= response)=>{
+
+    let anio = req.params.anio
+    let cod_tipo = req.params.cod_tipo
+    let dni = req.params.dni
+    let query;
+    try {
+        
+       query= await pool.query('SELECT * FROM FN_DOC_PENDIENTE_DNI($1,$2,$3)',[anio,cod_tipo,dni]);
+
+        if (query.rowCount===0) {
+            return res.status(400).json({
+                ok:true,
+                msg:`No hay datos para ${dni}`
+            });
+        }
+      
+       return res.status(200).json({
+           ok:true,
+           data:query.rows
+       });
+
+    } catch (error) {
+        return res.status(500).json({
+            ok:false,
+            msg:'No se pudo cargar la información'
         })
     }
 }
@@ -177,5 +247,7 @@ module.exports={
     datosAlumno,
     datosParentesco,
     nuevaMatricula,
-    metricasMatricula
+    metricasMatricula,
+    actualizarDoc,
+    docDni
 }

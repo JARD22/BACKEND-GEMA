@@ -17,10 +17,10 @@ Programador                      Cambio                     Fecha
 */
 
 const {Router}= require('express');
-const { tiposMatricula, cursos, datosAlumno, datosParentesco, nuevaMatricula, metricasMatricula } = require('../controllers/matricula');
+const { tiposMatricula, cursos, datosAlumno, datosParentesco, nuevaMatricula, metricasMatricula, actualizarDoc, docDni } = require('../controllers/matricula');
 const router = Router();
 const validarToken = require('../helpers/validar-jwt');
-const validarCampos = require('../middlewares/validar-campos');
+
 
 
 
@@ -34,7 +34,14 @@ router.get('/datos-parentesco/:dni',validarToken,datosParentesco)
 
 router.post('/nueva-matricula',validarToken,nuevaMatricula);
 
-router.get('/metricas/:anio',validarToken,metricasMatricula)
+router.get('/metricas/:anio/:cod_tipo/:offset',metricasMatricula);
+
+router.get('/doc-dni/:anio/:cod_tipo/:dni',docDni);
+
+router.patch('/actualizar-datos',validarToken,actualizarDoc)
+
+
+
 module.exports=router;
 
 
