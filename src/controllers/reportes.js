@@ -14,10 +14,6 @@ const directorio= async(req,res=response)=>{
     let {anio,curso,seccion}= req.params
     try {
         
-
-     
-
-        // console.log(alumTelefonos)
         nombres = await pool.query('SELECT * FROM FN_NOMBRES_ALUMNO_DIRECTORIO($1,$2,$3)',[anio,curso,seccion])
         numeros = await pool.query('SELECT * FROM FN_TELEFONOS_DIRECTORIO($1,$2,$3)',[anio,curso,seccion])
     
@@ -46,10 +42,11 @@ const directorio= async(req,res=response)=>{
 
 const matriculaDiaria = async(req,res=response)=>{
 
-    let anio = req.params.anio
+    let fi = req.params.fi
+    let ff = req.params.ff
 let query;
     try {
-        query =await pool.query('SELECT * FROM FN_REPORTE_MATRICULA_DIARIA($1)',[anio])
+        query =await pool.query('SELECT * FROM FN_REPORTE_MATRICULA_DIARIA_R($1,$2)',[fi,ff])
  
         if (query.rowCount==0) {
             return res.status(400).json({

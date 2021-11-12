@@ -68,7 +68,7 @@ const activarUsuario=async(req,res=respose)=>{
         });
 
     } catch (error) {
-        console.log(error)
+        
         return res.status(500).json({
             ok:false,
             msg:`Error al activar el usuario ${correo}`
@@ -158,7 +158,7 @@ try {
     
 
 } catch (error) {
-    console.log(error)
+    
         return res.status(500).json({
             ok:false,
             msg:'No se pudo actualizar la contraseña'

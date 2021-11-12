@@ -35,7 +35,7 @@ const tipoPersona = async(req,res=response)=>{
 
 
     } catch (error) {
-        console.log(error)
+        
         return res.status(500).json({
             ok:false,
             msg:error
@@ -95,7 +95,7 @@ const registroPersonaUsuario = async(req,res=response)=>{
             
         });
     } catch (error) {
-        console.log(error)
+        
         return res.status(500).json({
             ok:false,
             msg:error.hint
@@ -155,9 +155,7 @@ const registroPersonaFamiliar = async(req,res=response)=>{
         }
 
     try {
-//   console.log(cod_tipo_persona,dni,primer_nombre,primer_apellido,nacionalidad,segundo_nombre,segundo_apellido,
-//     sexo,fecha_nacimiento,direccion,JSON.stringify(telefonosFamiliar),crear_grupo,grupo,lugar_trabajo,
-//     ocupacion,encargado,escolaridad)
+
 let telefonos=JSON.stringify(telefonosFamiliar)
                 
     await pool.query('CALL SP_PERSONA_FAMILIAR($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19)',[
@@ -170,7 +168,7 @@ let telefonos=JSON.stringify(telefonosFamiliar)
             msg:'Persona registrada'
         });
     } catch (error) {
-        console.log(error)
+        
         return res.status(500).json({
             ok:false,
             msg:error.hint
@@ -214,8 +212,7 @@ let {dni,primer_nombre,primer_apellido,nacionalidad,segundo_nombre,segundo_apell
    
         let telefonos = JSON.stringify(telefonosFamiliar)
 
-        // console.log(dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,correo,direccion,telefonos,
-        //     lugar_trabajo,ocupacion,encargado,escolaridad,uid,segundo_nombre,segundo_apellido)
+        
 await pool.query('CALL SP_ACTUALIZAR_FAMILIAR($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16 )',[
     dni,primer_nombre,primer_apellido,nacionalidad,sexo,fecha_nacimiento,correo,direccion,telefonos,
     lugar_trabajo,ocupacion,encargado,escolaridad,uid,segundo_nombre,segundo_apellido])
@@ -293,7 +290,7 @@ const busquedaPorTermnino=async(req,res=response)=>{
         })
 
     } catch (error) {
-        console.log(error)
+
         return res.status(500).json({
             ok:false
         })

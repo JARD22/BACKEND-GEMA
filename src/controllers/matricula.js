@@ -142,7 +142,7 @@ const nuevaMatricula= async(req,res=response)=>{
         });
 
     } catch (error) {
-    
+
         return res.status(500).json({
             ok:false,
             msg:error.hint
