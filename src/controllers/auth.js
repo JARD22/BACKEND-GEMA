@@ -75,7 +75,7 @@ const renovar= async(req,res=response)=>{
  let correo = req.correo
 
  try {
-    const usuarioDB= await pool.query('SELECT * FROM FN_LOGIN($1)',[correo]);
+    let usuarioDB= await pool.query('SELECT * FROM FN_LOGIN($1)',[correo]);
 
    let userObj ={
             id:usuarioDB.rows[0].out_id,
@@ -86,8 +86,9 @@ const renovar= async(req,res=response)=>{
 
 }
 
-    const token = await generarJWT(userObj.correo);
+    let token = await generarJWT(userObj.correo);
     
+    console.log(userObj,token)
     return res.status(200).json({
         ok:true,
         userObj,

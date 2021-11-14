@@ -170,7 +170,7 @@ const metricasMatricula = async(req,res=response)=>{
         if (query1.rowCount==0) {
             return res.status(400).json({
                 ok:false,
-                msg:`No hay metricas para el anio ${anio}`
+                msg:`No hay datos para el anio ${anio}`
             });
         }
 
